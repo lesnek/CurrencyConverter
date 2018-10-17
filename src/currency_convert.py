@@ -3,6 +3,7 @@ import json
 import sys
 
 import requests
+import argparse
 
 class CurrencyConverter:
     def __init__(self, url="https://api.exchangeratesapi.io/latest"):
@@ -32,14 +33,26 @@ class CurrencyConverter:
                 result_dict[to_currency] = amount * self.rates[to_currency]
         return self.printFormatter(amount_input, from_currency, result_dict)
 
-    # Finish the output format
-    def printFormatter(self, amount_input, from_currency, result):
-        output = dict()
+    def printFormatter(self, amount_input, from_currency, result_dict):
+        '''
+        Create needed output format
+
+        :param float: Amount which we want to convert
+        :param str from_currency: Input currency - 3 letters currency symbol
+        :param dict result_dict: Dictionary of finished convertitions {"Symbol": "Amount"}
+        '''
+        output = {}
         output["input"] = {"amount": amount_input, "currency": from_currency}
-        output["output"] = result
+        output["output"] = result_dict
         return output
 
-converter = CurrencyConverter()
+    def cli_input(self):
+        parser = argparse.ArgumentParser(description='Currency converter')
+        parser.add_argument('--amount', type=int, help="Amount which we want to convert")
+        parser.add_argument('--input_currency', help="Input currency in format of 3 letters symbol eg.(EUR)")
+        parser.add_argument('--output_currency', default=None, help="Output currency in format of 3 letters symbol eg.(USD)")
+        args = parser.parse_args()
+        result = self.convert(args.amount, args.input_currency, args.output_currency)
+        return result
 
-print(converter.convert(100, "CZK", "EUR"))
-print(converter.convert(100, "CZK", "CZK"))
+print(CurrencyConverter().cli_input())
