@@ -5,7 +5,7 @@ Intro test for kiwi.com: Currency converter is made into server API and CLI
 ### Instalation
 install docker volume
 ```
-docker-compose currency_convert.py
+Docker in progress
 ```
 ### Usage
 For simple convert

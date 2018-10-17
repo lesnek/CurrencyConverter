@@ -16,7 +16,7 @@ class CurrencyConverter:
         '''
         Converting currency by EUR rates
 
-        :param float amount: Amount which we want to convert
+        :param float amount_input: Amount which we want to convert
         :param str from_currency: Input currency - 3 letters currency symbol
         :param str to_currency: Requested currency - 3 letters currency symbol
         '''
@@ -53,7 +53,16 @@ class CurrencyConverter:
         parser.add_argument('--input_currency', required=True, help="Input currency in format of 3 letters symbol eg.(EUR)")
         parser.add_argument('--output_currency', default=None, help="Output currency in format of 3 letters symbol eg.(USD)")
         args = parser.parse_args()
+#        symbol_array = self.symbol_to_currency(args.input_currency, args.output_currency)
         result = self.convert(args.amount, args.input_currency, args.output_currency)
         return result
+
+#    def symbol_to_currency(self, input_currency, output_currency):
+#        symbol_dict = {'€': 'EUR', '$': 'USD', 'Kč': 'CZK', '¥': 'CNY', '£': 'GBP'}
+#        try:
+#            input_currency = symbol_dict[input_currency]
+#            output_currency = symbol_dict[output_currency]
+#        pass
+
 
 print(CurrencyConverter().cli_input())
