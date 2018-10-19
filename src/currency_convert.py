@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 import json
 import sys
@@ -7,10 +7,13 @@ import requests
 import argparse
 
 class CurrencyConverter:
-    def __init__(self, url="https://api.exchangeratesapi.io/latest"):
+    def __init__(self, custom_dict=None, url="https://api.exchangeratesapi.io/latest"):
         response  = requests.get(url) 
         json_data = response.json()
-        self.rates = json_data["rates"]
+        if custom_dict == None:
+            self.rates = json_data["rates"]
+        else:
+            self.rates = custom_dict
         
     def convert(self, amount_input, from_currency, to_currency=None):
         '''
@@ -21,18 +24,19 @@ class CurrencyConverter:
         :param str to_currency: Requested currency - 3 letters currency symbol
         '''
         result_dict = {}
+        amount = amount_input
         if (from_currency != "EUR"):
-            amount = amount_input / self.rates[from_currency]
+            amount_input = amount_input / self.rates[from_currency]
         if (to_currency == None):
             for key in self.rates:
-                converted = amount * self.rates[key]
+                converted = amount_input * self.rates[key]
                 result_dict[key] = converted
         else:
             if (to_currency == "EUR"):
-                result_dict["EUR"] = amount
+                result_dict["EUR"] = amount_input
             else:
-                result_dict[to_currency] = amount * self.rates[to_currency]
-        return self.printFormatter(amount_input, from_currency, result_dict)
+                result_dict[to_currency] = amount_input * self.rates[to_currency]
+        return self.printFormatter(amount, from_currency, result_dict)
 
     def printFormatter(self, amount_input, from_currency, result_dict):
         '''
