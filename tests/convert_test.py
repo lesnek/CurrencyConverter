@@ -1,10 +1,18 @@
-import unittest
+import pytest
 
-import .currency_convert
 
-class convert_testing():
-    convertor = currency_convert.Currency_converter()
+@pytest.mark.parametrize("amount,from_currency,to_currency,result", [
+    (100, "B", "D", {'D': 400.0}),
+    (100, "B", "D", {'D': 400.0}),
+    (100, "B", "D", {'D': 400.0}),
+    (100, "B", "D", {'D': 400.0}),
+    (100, "B", "D", {'D': 400.0}),
+    (100, "B", "D", {'D': 400.0}),
+])
+def test_convert(amount, from_currency, to_currency, result):
+    from src.currency_convert import CurrencyConverter
+
     test_dict = {"A": 0, "B": 0.5, "C": 1, "D": 2}
-    
-    def convert_test_1(self):
-        self.assertEqual(convertor.convert(100, ""), 1)
+    converter = CurrencyConverter(test_dict)
+
+    assert converter.convert(amount, from_currency, to_currency) == result
