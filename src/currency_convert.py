@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-import requests
 import argparse
 import json
 
-
-# from .currency_rates import CurrencyRates
+import requests
 
 
 class CurrencyConverter:
@@ -27,10 +25,14 @@ class CurrencyConverter:
         :param str from_currency: Input currency - 3 letters currency symbol
         :param str to_currency: Requested currency - 3 letters currency symbol
         """
+        from_currency, to_currency = self.symbol_to_currency(from_currency, to_currency)
+
         result_dict = {}
         amount = amount_input
+        
         if from_currency != "EUR":
             amount_input = amount_input / self.rates[from_currency]
+
         if to_currency is None:
             for key in self.rates:
                 converted = amount_input * self.rates[key]
@@ -40,6 +42,7 @@ class CurrencyConverter:
                 result_dict["EUR"] = amount_input
             else:
                 result_dict[to_currency] = amount_input * self.rates[to_currency]
+
         return result_dict
 
     @staticmethod
@@ -54,23 +57,11 @@ class CurrencyConverter:
         output = {"input": {"amount": amount_input, "currency": from_currency}, "output": result_dict}
         return json.dumps(output)
 
-    def cli_input(self):
-        parser = argparse.ArgumentParser(description='Currency converter')
-        parser.add_argument('--amount', type=int, required=True, help="Amount which we want to convert")
-        parser.add_argument('--input_currency', required=True,
-                            help="Input currency in format of 3 letters symbol eg.(EUR)")
-        parser.add_argument('--output_currency', default=None,
-                            help="Output currency in format of 3 letters symbol eg.(USD)")
-        args = parser.parse_args()
-        symbol_array = self.symbol_to_currency(args.input_currency, args.output_currency)
-        result = self.convert(args.amount, symbol_array[0], symbol_array[1])
-        return result
 
     def symbol_to_currency(self, input_currency, output_currency):
         symbol_dict = {'€': 'EUR', '$': 'USD', 'Kč': 'CZK', '¥': 'CNY', '£': 'GBP'}
-        if input_currency in symbol_dict:
-            input_currency = symbol_dict[input_currency]
-        if output_currency in symbol_dict:
-            output_currency = symbol_dict[output_currency]
 
-        return [input_currency, output_currency]
+        new_input_currency = symbol_dict.get(input_currency, input_currency)
+        new_output_currency = symbol_dict.get(output_currency, output_currency)
+
+        return new_input_currency, new_output_currency

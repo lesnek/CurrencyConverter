@@ -1,3 +1,4 @@
 pytest
 requests
-
+gunicorn
+flask
