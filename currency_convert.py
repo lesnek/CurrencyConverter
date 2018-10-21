@@ -16,8 +16,9 @@ def main():
                         help="Output currency in format of 3 letters symbol eg.(USD)")
     args = parser.parse_args()
 
-    converted_dict = converter.convert(args.amount, args.input_currency, args.output_currency)
-    output = converter.output_formatter(args.amount, args.input_currency, converted_dict)
+    from_currency, to_currency = converter.symbol_to_currency(args.input_currency, args.output_currency)
+    converted_dict = converter.convert(args.amount, from_currency, to_currency)
+    output = converter.output_formatter(args.amount, from_currency, converted_dict)
     print(output)
 
 

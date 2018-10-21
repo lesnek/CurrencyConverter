@@ -12,8 +12,9 @@ def on_get():
     amount = int(request.args.get("amount", 1))
     input_currency = request.args.get("input_currency", "EUR")
     output_currency = request.args.get("output_currency", None)
-    
-    converted_dict = converter.convert(amount, input_currency, output_currency)
-    output = converter.output_formatter(amount, input_currency, converted_dict)
+
+    from_currency, to_currency = converter.symbol_to_currency(input_currency, output_currency)
+    converted_dict = converter.convert(amount, from_currency, to_currency)
+    output = converter.output_formatter(amount, from_currency, converted_dict)
     
     return output, 200

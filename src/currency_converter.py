@@ -17,7 +17,7 @@ class CurrencyConverter:
         :param str from_currency: Input currency - 3 letters currency symbol
         :param str to_currency: Requested currency - 3 letters currency symbol
         """
-        from_currency, to_currency = self.symbol_to_currency(from_currency, to_currency)
+        # from_currency, to_currency = self.symbol_to_currency(from_currency, to_currency)
 
         output = {}
         
