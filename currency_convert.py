@@ -2,7 +2,7 @@
 
 import argparse
 
-from src.currency_convert import CurrencyConverter
+from src.currency_converter import CurrencyConverter
 
 
 def main():

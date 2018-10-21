@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-from src.currency_convert import CurrencyConverter
+from src.currency_converter import CurrencyConverter
 
 
 app = Flask(__name__)
