@@ -1,21 +1,13 @@
 #!/usr/bin/env python3
 
-import argparse
 import json
 
-import requests
+from src.currency_rates import currency_rates
 
 
 class CurrencyConverter:
-    def __init__(self, custom_dict=None, url="https://api.exchangeratesapi.io/latest"):
-        response = requests.get(url)
-        json_data = response.json()
-
-        if custom_dict is None:
-            # self.rates = CurrencyRates.currency_rates(
-            self.rates = json_data["rates"]
-        else:
-            self.rates = custom_dict
+    def __init__(self, custom_data=None):
+        self.rates = custom_data or currency_rates()
 
     def convert(self, amount_input, from_currency, to_currency=None):
         """
@@ -27,41 +19,36 @@ class CurrencyConverter:
         """
         from_currency, to_currency = self.symbol_to_currency(from_currency, to_currency)
 
-        result_dict = {}
-        amount = amount_input
+        output = {}
         
         if from_currency != "EUR":
             amount_input = amount_input / self.rates[from_currency]
 
-        if to_currency is None:
+        if (to_currency is None) or (to_currency is ''):
             for key in self.rates:
-                converted = amount_input * self.rates[key]
-                result_dict[key] = converted
+                output[key] = amount_input * self.rates[key]
         else:
             if to_currency == "EUR":
-                result_dict["EUR"] = amount_input
+                output["EUR"] = amount_input
             else:
-                result_dict[to_currency] = amount_input * self.rates[to_currency]
+                output[to_currency] = amount_input * self.rates[to_currency]
 
-        return result_dict
+        return output
 
     @staticmethod
-    def print_formatter(amount_input, from_currency, result_dict):
-        """
-        Create needed output format
-
-        :param float amount_input: Amount which we want to convert
-        :param str from_currency: Input currency - 3 letters currency symbol
-        :param dict result_dict: Dictionary of finished convertitions {"Symbol": "Amount"}
-        """
-        output = {"input": {"amount": amount_input, "currency": from_currency}, "output": result_dict}
-        return json.dumps(output)
-
-
-    def symbol_to_currency(self, input_currency, output_currency):
+    def symbol_to_currency(input_currency, output_currency):
         symbol_dict = {'€': 'EUR', '$': 'USD', 'Kč': 'CZK', '¥': 'CNY', '£': 'GBP'}
 
         new_input_currency = symbol_dict.get(input_currency, input_currency)
         new_output_currency = symbol_dict.get(output_currency, output_currency)
 
-        return new_input_currency, new_output_currency
+        # Fixture of lowercase input
+        if output_currency is None:
+            return new_input_currency.upper(), new_output_currency
+
+        return new_input_currency.upper(), new_output_currency.upper()
+
+    @staticmethod
+    def output_formatter(amount, from_currency, output):
+        result = {'input': {'amount': amount, 'currency': from_currency}, 'output': output}
+        return json.dumps(result)

@@ -1,3 +1,9 @@
-FROM python:3
-ADD currency_convert.py /
-CMD ["python", "./currency_convert.py"]
+FROM python:3-alpine
+
+WORKDIR /app
+ADD . .
+
+RUN pip install -r requirements.txt
+
+ENV FLASK_APP=server.py
+CMD ["flask", "run", "--host", "0.0.0.0"]
