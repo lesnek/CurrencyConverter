@@ -1,5 +1,6 @@
 # Currency converter 
-[![Build Status](https://travis-ci.org/lesnek/CurrencyConverter.svg?branch=master)](https://travis-ci.org/lesnek/CurrencyConverter)
+[![Build Status](https://travis-ci.org/lesnek/CurrencyConverter.svg?branch=master)](https://travis-ci.org/lesnek/CurrencyConverter)<br />
+<br />
 Intro test for kiwi.com: Currency converter made into server API and CLI application
 
 ## Currency CLI application
