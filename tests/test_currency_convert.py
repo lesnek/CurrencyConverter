@@ -15,3 +15,17 @@ def test_convert(amount, from_currency, to_currency, result):
     converter = CurrencyConverter(test_dict)
 
     assert converter.convert(amount, from_currency, to_currency) == result
+
+
+@pytest.mark.parametrize("input_currency, output_currency, result_arr", [
+    ("eur", "usd", ("EUR", "USD")),
+    ("eur", "$", ("EUR", "USD")),
+    ("€", "usd", ("EUR", "USD")),
+    ("€", "$", ("EUR", "USD")),
+])
+def test_convert_symbol(input_currency, output_currency, result_arr):
+    from src.currency_converter import CurrencyConverter
+
+    converter = CurrencyConverter()
+
+    assert converter.symbol_to_currency(input_currency, output_currency) == result_arr

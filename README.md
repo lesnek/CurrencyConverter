@@ -31,7 +31,7 @@ localhost:5000/currency_converter?amount=200&input_currency=USD&output_currency=
 ```
 
 ## Testing
-Testing of both applications is provided by pytests
+Testing of application is provided by pytests
 ```
 python -m pytest tests/
 ```
