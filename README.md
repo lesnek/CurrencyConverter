@@ -7,7 +7,7 @@ Intro test for kiwi.com: Currency converter made into server API and CLI applica
 ### Installation
 install python requirements
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 ### Usage
 For simple convert
@@ -35,5 +35,5 @@ localhost:5000/currency_converter?amount=200&input_currency=USD&output_currency=
 ## Testing
 Testing of application is provided by pytests
 ```
-python -m pytest tests/
+python3 -m pytest tests/
 ```
